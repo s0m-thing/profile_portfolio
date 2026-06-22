@@ -1,0 +1,304 @@
+/* 노말라이즈 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+}
+
+/* font */
+.eb-garamond-<uniquifier> {
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
+/* 전체 인트로 */
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background-color: #fff;
+    overflow: hidden;
+    animation: introOut 1.2s ease forwards;
+    animation-delay: 9s;
+}
+
+.intro-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 1. 명함 */
+.scene-card {
+    animation: cardScene 2.2s ease forwards;
+}
+
+.scene-card img {
+    width: 696px;
+    max-width: 45vw;
+    animation: cardScale 1.6s ease-in-out forwards;
+}
+/* 로딩 Scene */
+.scene-loading {
+    opacity: 0;
+    animation: loadingScene 3.1s ease forwards;
+    animation-delay: 2.2s;
+}
+
+/* 100% 완료 후 페이드아웃 */
+.scene-loading.is-complete {
+    opacity: 0;
+}
+
+.loading-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+
+.loading-percent {
+    width: 42px;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: #3b2d25;
+    text-align: right;
+}
+
+.loading-bar {
+    width: 420px;
+    height: 2px;
+    background-color: rgba(60, 45, 35, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-bar span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: #3b2d25;
+    animation: loadingFill 1.8s ease forwards;
+    animation-delay: 2.55s;
+}
+
+/* 3. 문장 */
+.scene-text {
+    opacity: 0;
+    flex-direction: column;
+    gap: 12px;
+    animation: textScene 2.8s ease forwards;
+    animation-delay: 5.9s;
+}
+
+.scene-text p:first-child {
+    font-family: "EB Garamond", serif;
+    font-size: 24px;
+    line-height: 1.8;
+    color: #222;
+    letter-spacing: 1%;
+}
+
+.scene-text p:last-child {
+    font-family: 'Pretendard';
+    font-size: 32px;
+    line-height: 1.5;
+    color: #999;
+    letter-spacing: 2%;
+}
+
+/* 4. 표지 */
+.cover {
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    animation: coverIn 2.2s ease forwards;
+    animation-delay: 9s;
+}
+
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* keyframes */
+@keyframes cardScale {
+    0% {
+        transform: scale(1);
+    }
+    45% {
+        transform: scale(1.18);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes cardScene {
+    0%, 70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes loadingScene {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    82% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes loadingFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes loadingFill {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+
+@keyframes textScene {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    75% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes coverIn {
+    0% {
+        opacity: 0;
+        filter: blur(4px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@keyframes introOut {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
