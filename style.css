@@ -493,3 +493,257 @@ body {
     transform: rotate(-60deg);
     pointer-events: none;
 }
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Works */
+.works-section {
+	--work-view-height: 800px;
+	--work-card-width: 1160px;
+	--work-card-height: 414px;
+	--work-nav-width: 120px;
+
+	/* 800px 구간 안에서 카드가 세로 중앙에 오도록 */
+	--work-top: calc((var(--work-view-height) - var(--work-card-height)) / 2);
+
+	/* 카드 한 장이 차지하는 구간 = 800px */
+	--work-gap: calc(var(--work-view-height) - var(--work-card-height));
+
+	width: 100%;
+	background-color: #fff;
+	position: relative;
+	padding: 0;
+	overflow: visible;
+}
+
+.works-layout {
+	width: calc(var(--work-nav-width) + var(--work-card-width));
+	margin: 0 auto;
+
+	display: grid;
+	grid-template-columns: var(--work-nav-width) var(--work-card-width);
+	align-items: start;
+
+	position: relative;
+
+	/* 첫 카드도 800px 구간 안에서 중앙에 오게 */
+	padding-top: var(--work-top);
+}
+
+/* 왼쪽 원 네비 */
+.works-nav {
+	position: sticky;
+	top: var(--work-top);
+	z-index: 20;
+
+	width: var(--work-nav-width);
+	height: var(--work-card-height);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 14px;
+
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: 0.3s ease;
+}
+
+.works-section.is-nav-show .works-nav {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.works-nav a {
+	width: 7px;
+	height: 7px;
+	border: 1px solid #191919;
+	border-radius: 50%;
+	background-color: transparent;
+
+	display: block;
+	transition: 0.3s ease;
+}
+
+.works-nav a.active {
+	background-color: #191919;
+	transform: scale(1.35);
+}
+
+/* 카드 리스트 */
+.works-list {
+	width: var(--work-card-width);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	position: relative;
+}
+
+/* 실제 겹쳐지는 카드 */
+.work-card {
+	position: sticky;
+	top: var(--work-top);
+
+	width: var(--work-card-width);
+	height: var(--work-card-height);
+	margin-bottom: var(--work-gap);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+
+	background-color: #f4efe7;
+	border-radius: 28px;
+	font-family: "Pretendard", sans-serif;
+	color: #191919;
+	overflow: hidden;
+}
+
+/* 작은 라벨 디테일 */
+.work-card::before {
+	content: "";
+	position: absolute;
+	top: 28px;
+	right: 32px;
+
+	width: 64px;
+	height: 18px;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.55);
+	border: 1px solid rgba(25, 25, 25, 0.12);
+}
+
+/* 뒤 카드가 앞 카드 위로 올라오게 */
+.work-card:nth-child(1) {
+	z-index: 1;
+}
+
+.work-card:nth-child(2) {
+	z-index: 2;
+}
+
+.work-card:nth-child(3) {
+	z-index: 3;
+}
+
+.work-card:nth-child(4) {
+	z-index: 4;
+}
+
+.work-card:nth-child(5) {
+	z-index: 5;
+}
+
+/* 마지막 카드도 앞 카드를 완전히 덮을 수 있게 여유를 줌 */
+.work-card:last-child {
+	margin-bottom: max(
+		var(--work-gap),
+		calc(100vh - var(--work-top) - var(--work-card-height))
+	);
+}
+
+/* 왼쪽 목업 */
+.work-thumb {
+	width: 560px;
+	height: 360px;
+	background-color: #e5ded4;
+	flex: 0 0 560px;
+	overflow: hidden;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-radius: 22px;
+}
+
+.work-thumb span {
+	font-size: 16px;
+	font-weight: 400;
+	color: #191919;
+}
+
+.work-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+/* 오른쪽 텍스트 */
+.work-content {
+	width: 500px;
+	height: 360px;
+	flex: 0 0 500px;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.work-content h2 {
+	font-family: "EB Garamond", serif;
+	font-size: 40px;
+	font-weight: 500;
+	line-height: 1.5;
+	letter-spacing: -0.01em;
+	margin-bottom: 16px;
+}
+
+.work-meta {
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.5;
+	margin-bottom: 48px;
+}
+
+.work-desc {
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.6;
+	word-break: keep-all;
+	flex-grow: 1;
+}
+
+/* 버튼 */
+.work-btns {
+	display: flex;
+	gap: 28px;
+}
+
+.work-btns a {
+	width: 144px;
+	height: 44px;
+	border: 1px solid #191919;
+	border-radius: 999px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1;
+	text-decoration: none;
+	color: #191919;
+
+	transition: 0.3s ease;
+}
+
+.work-btns a:hover {
+	background-color: #191919;
+	color: #fff;
+}
+
+.work-btns a span {
+	font-size: 13px;
+	line-height: 1;
+}
