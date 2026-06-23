@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+body, ul, li {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+    display: block;
+    text-decoration: none;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -63,20 +73,6 @@ body {
     font-family: 'Pretendard';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
     font-weight: 700;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
-    font-weight: 800;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
-    font-weight: 900;
     font-display: swap;
 }
 
@@ -262,22 +258,18 @@ body {
 @keyframes textScene {
     0% {
         opacity: 0;
-        transform: translateY(16px);
     }
 
     30% {
         opacity: 1;
-        transform: translateY(0);
     }
 
     75% {
         opacity: 1;
-        transform: translateY(0);
     }
 
     100% {
         opacity: 0;
-        transform: translateY(-12px);
     }
 }
 
@@ -312,6 +304,7 @@ body {
     background-color: #fff;
     display: flex;
     justify-content: center;
+    align-items: center;
     position: relative;
 }
 
@@ -320,30 +313,47 @@ body {
     height: 950px;
     padding: 0 20px;
     position: relative;
-    
-    display: grid;
-    grid-template-columns: repeat(12, 80px);
-    grid-template-rows: repeat(10, 95px);
-    column-gap: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 100px;
 
     font-family: "Pretendard", sans-serif;
     color: #191919;
+    overflow: visible;
 }
 
 /* 왼쪽 프로필 */
 .profile-card {
-    grid-column: 1 / 3;
-    grid-row: 3 / 8;
-    width: 200px;
-    align-self: start;
+    width: 260px;
+    flex: 0 0 260px;
+    margin-top: 205px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-pic {
+    width: 260px;
+    height: 333px;
+    margin-bottom: 40px;
 }
 
 .profile-photo {
-    width: 200px;
-    height: 260px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
-    margin-bottom: 38px;
+}
+
+/* dl 기본 여백 제거 */
+.profile-info,
+.profile-info dt,
+.profile-info dd {
+    margin: 0;
+    padding: 0;
 }
 
 .profile-info {
@@ -353,9 +363,9 @@ body {
 }
 
 .profile-info div {
-    display: grid;
-    grid-template-columns: 70px 1fr;
+    display: flex;
     align-items: center;
+    gap: 32px;
 }
 
 .profile-info dt,
@@ -363,55 +373,71 @@ body {
     font-size: 16px;
     font-weight: 400;
     line-height: 1;
+    color: #191919;
+    white-space: nowrap;
 }
 
 .profile-info dt {
-    color: #191919;
+    width: 60px;
+    flex: 0 0 60px;
 }
 
 .profile-info dd {
-    color: #191919;
+    flex: 1;
 }
 
-/* 공통 블록 */
-.profile-block h2,
-.profile-skills h2 {
+/* 오른쪽 정보 전체 */
+.profile-content {
+    width: 930px;
+    margin-top: 145px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 110px;
+}
+
+/* Education + Certification */
+.profile-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.profile-block h2 {
     font-size: 14px;
     font-weight: 600;
     line-height: 1;
-    margin-bottom: 38px;
+    margin-bottom: 28px;
 }
 
-/* 학력 / 경력 */
+/* Education */
 .profile-history {
-    grid-column: 4 / 8;
-    grid-row: 2 / 6;
-    align-self: start;
+    width: 500px;
+    flex: 0 0 500px;
 }
 
-/* 자격증 */
+/* Certification */
 .profile-certification {
-    grid-column: 9 / 13;
-    grid-row: 2 / 6;
-    align-self: start;
-    transform: translateX(-40px);
+    width: 420px;
+    flex: 0 0 420px;
 }
 
 /* 리스트 */
 .profile-list {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 16px;
 }
 
 .profile-list-item {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    column-gap: 28px;
-    align-items: start;
+    display: flex;
+    align-items: flex-start;
 }
 
 .profile-date {
+    width: 150px;
+    flex: 0 0 150px;
+
     font-size: 14px;
     font-weight: 400;
     line-height: 1.8;
@@ -425,17 +451,18 @@ body {
     white-space: nowrap;
 }
 
-/* 스킬 */
+/* Skills */
 .profile-skills {
-    grid-column: 4 / 11;
-    grid-row: 7 / 8;
-    align-self: start;
+    width: 100%;
 }
 
 .skill-list {
     display: flex;
-    gap: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .skill-list li {
@@ -445,23 +472,12 @@ body {
     white-space: nowrap;
 }
 
-/* 오른쪽 태그 장식 */
+/* 태그 */
 .profile-tag {
-    grid-column: 10 / 13;
-    grid-row: 7 / 10;
     width: 148px;
     position: absolute;
+    right: 70px;
+    bottom: -110px;
     transform: rotate(-60deg);
-    bottom: -100px;
-    right: -20px;
-}
-
-/* 접근성용 숨김 텍스트 필요할 때 */
-.blind {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    pointer-events: none;
 }
