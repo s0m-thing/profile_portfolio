@@ -440,6 +440,11 @@ body {
     align-items: center;
 }
 
+.profile-list-item-end  {
+    display: flex;
+    align-items: flex-start;
+}
+
 .profile-date {
     width: 150px;
     flex: 0 0 150px;
