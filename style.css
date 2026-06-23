@@ -127,6 +127,7 @@ body {
 .loading-percent {
     width: 42px;
     font-size: 15px;
+    font-family: "EB Garamond", serif;
     letter-spacing: 0.08em;
     color: #3b2d25;
     text-align: right;
