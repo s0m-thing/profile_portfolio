@@ -23,7 +23,7 @@ body {
 .eb-garamond-<uniquifier> {
     font-family: "EB Garamond", serif;
     font-optical-sizing: auto;
-    font-weight: <weight>;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -328,6 +328,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 100px;
+    height: 485px;
 }
 
 /* 왼쪽 프로필 */
@@ -394,10 +395,10 @@ body {
 /* 오른쪽 정보 전체 */
 .profile-content {
     width: 930px;
-
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 100px;
+    justify-content: space-between;
 }
 
 /* Education + Certification */
