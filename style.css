@@ -316,19 +316,24 @@ body {
 
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 100px;
 
     font-family: "Pretendard", sans-serif;
     color: #191919;
-    overflow: visible;
+    overflow: hidden;
+}
+
+.profile-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
 }
 
 /* 왼쪽 프로필 */
 .profile-card {
     width: 260px;
     flex: 0 0 260px;
-    margin-top: 205px;
 
     display: flex;
     flex-direction: column;
@@ -389,11 +394,10 @@ body {
 /* 오른쪽 정보 전체 */
 .profile-content {
     width: 930px;
-    margin-top: 145px;
 
     display: flex;
     flex-direction: column;
-    gap: 110px;
+    gap: 100px;
 }
 
 /* Education + Certification */
@@ -432,6 +436,7 @@ body {
 .profile-list-item {
     display: flex;
     align-items: flex-start;
+    align-items: center;
 }
 
 .profile-date {
@@ -447,7 +452,7 @@ body {
 .profile-desc {
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.4;
+    line-height: 1.8;
     white-space: nowrap;
 }
 
