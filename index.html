@@ -8,43 +8,46 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 
-    <!-- font -->
+    <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Libre+Bodoni&display=swap" rel="stylesheet">
 </head>
 <body>
     <body>
-    <section class="intro">
 
-        <!-- 1. 명함 -->
-        <div class="intro-scene scene-card">
-            <img src="img/card.png" alt="Kim Hansom name card">
-        </div>
+        <section class="intro">
 
-        <!-- 2. 로딩바 -->
-        <div class="intro-scene scene-loading">
-            <div class="loading-wrap">
-                <p class="loading-percent">0%</p>
+            <!-- 명함 -->
+            <div class="intro-scene scene-card">
+                <img src="img/card.png" alt="Kim Hansom name card">
+            </div>
 
-                <div class="loading-bar">
-                <span></span>
+            <!-- 로딩 -->
+            <div class="intro-scene scene-loading">
+                <div class="loading-wrap">
+                    <p class="loading-text">LOADING</p>
+
+                    <div class="loading-bar">
+                        <span class="loading-fill"></span>
+                    </div>
+
+                    <p class="loading-percent">0%</p>
                 </div>
             </div>
-        </div>
 
-        <!-- 3. 문장 -->
-        <div class="intro-scene scene-text">
-            <p>Web Designer Portfolio</p>
-            <p>생각은 깊게, 움직임은 분명하게</p>
-        </div>
-    </section>
-
-    <main>
-        <!-- 표지 -->
-        <section class="cover">
-            <img src="img/intro.png" alt="Kim Hansom Portfolio Cover">
+            <!-- 문장 -->
+            <div class="intro-scene scene-text">
+                <p>Web Designer Portfolio</p>
+                <p>생각은 깊게, 움직임은 분명하게</p>
+            </div>
         </section>
+
+        <main>
+            <!-- 표지 -->
+            <section class="cover">
+                <img src="img/intro.png" alt="Kim Hansom Portfolio Cover">
+            </section>
 
         <!-- profile -->
 <section class="profile-section" id="profile">
