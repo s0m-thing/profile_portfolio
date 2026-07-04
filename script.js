@@ -26,13 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	const worksSection = document.querySelector('.works-section');
 	const worksList = document.querySelector('.works-list');
-	const workCards = document.querySelectorAll('.work-card');
 	const workNavLinks = document.querySelectorAll('.works-nav a');
 
-	if (!worksSection || !worksList || workCards.length === 0 || workNavLinks.length === 0) return;
+	if (!worksSection || !worksList || workNavLinks.length === 0) return;
 
-	let scrollAnimationId = null;
+	const navItems = Array.from(workNavLinks)
+		.map((link) => {
+			const targetId = link.getAttribute('href');
+			const card = targetId ? document.querySelector(targetId) : null;
+
+			return {
+				link,
+				card
+			};
+		})
+		.filter((item) => item.card);
+
+	const workCards = navItems.map((item) => item.card);
+
+	if (workCards.length === 0) return;
+
 	let ticking = false;
+	let scrollAnimationId = null;
+
+	let workTop = 0;
+	let worksListY = 0;
+	let workStep = 800;
+	let targetYs = [];
 
 	function getNumber(value, fallback = 0) {
 		const number = parseFloat(value);
@@ -43,25 +63,49 @@ document.addEventListener('DOMContentLoaded', () => {
 		return Math.min(Math.max(value, min), max);
 	}
 
-	function getWorkTop() {
-		return getNumber(getComputedStyle(workCards[0]).top, 120);
-	}
+	function refreshMeasurements() {
+		const worksStyle = getComputedStyle(worksSection);
+		const firstCardStyle = getComputedStyle(workCards[0]);
 
-	function getWorksListY() {
-		return window.scrollY + worksList.getBoundingClientRect().top;
-	}
+		workTop = getNumber(firstCardStyle.top, 120);
+		worksListY = window.scrollY + worksList.getBoundingClientRect().top;
 
-	function getCardY(index) {
-		return getWorksListY() + workCards[index].offsetTop;
+		const cssViewHeight = getNumber(worksStyle.getPropertyValue('--work-view-height'), 0);
+		const fallbackStep =
+			workCards[0].offsetHeight + getNumber(firstCardStyle.marginBottom, 0);
+
+		workStep = cssViewHeight || fallbackStep || 800;
+
+		/*
+			중요:
+			sticky 상태의 offsetTop을 다시 읽지 않고,
+			카드 한 장당 고정 간격으로 목표 위치 계산
+		*/
+		targetYs = workCards.map((_, index) => {
+			return worksListY + workStep * index - workTop;
+		});
 	}
 
 	function getTargetY(index) {
-		return getCardY(index) - getWorkTop();
+		refreshMeasurements();
+
+		return targetYs[index] ?? window.scrollY;
+	}
+
+	function getCurrentIndex() {
+		refreshMeasurements();
+
+		const firstTargetY = targetYs[0];
+		const lastIndex = workCards.length - 1;
+
+		const rawIndex = Math.round((window.scrollY - firstTargetY) / workStep);
+
+		return clamp(rawIndex, 0, lastIndex);
 	}
 
 	function setActiveNav(activeIndex) {
-		workNavLinks.forEach((link, index) => {
-			link.classList.toggle('active', index === activeIndex);
+		navItems.forEach((item, index) => {
+			item.link.classList.toggle('active', index === activeIndex);
 		});
 	}
 
@@ -69,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		workCards.forEach((card, index) => {
 			const nextCard = workCards[index + 1];
 
-			/* 마지막 카드는 동생이 없으니까 항상 선명하게 */
 			if (!nextCard) {
 				card.style.setProperty('--card-opacity', 1);
 				return;
@@ -79,71 +122,25 @@ document.addEventListener('DOMContentLoaded', () => {
 			const nextRect = nextCard.getBoundingClientRect();
 			const cardHeight = cardRect.height;
 
-			/*
-				동생 카드가 형 카드를 얼마나 덮었는지 계산
-				0 = 안 겹침
-				0.5 = 절반 겹침
-				1 = 완전히 겹침
-			*/
 			const overlap = cardRect.bottom - nextRect.top;
 			const overlapRatio = clamp(overlap / cardHeight, 0, 1);
 
-			let opacity = 1;
-
-			/*
-				절반 이상 겹친 순간부터 형 카드 opacity 감소
-				절반 겹침: opacity 1
-				완전히 겹침: opacity 0
-			*/
-			opacity = 1 - overlapRatio * 1.3;
+			const opacity = 1 - overlapRatio * 1.3;
 
 			card.style.setProperty('--card-opacity', clamp(opacity, 0, 1));
 		});
 	}
 
-	function getCurrentIndexByOverlap() {
-		let currentIndex = 0;
-
-		workCards.forEach((card, index) => {
-			if (index === 0) return;
-
-			const prevCard = workCards[index - 1];
-			const prevRect = prevCard.getBoundingClientRect();
-			const currentRect = card.getBoundingClientRect();
-
-			const overlap = prevRect.bottom - currentRect.top;
-			const overlapRatio = clamp(overlap / prevRect.height, 0, 1);
-
-			/*
-				동생이 형을 절반 이상 가렸을 때부터
-				동생을 현재 카드로 인식
-			*/
-			if (overlapRatio >= 0.5) {
-				currentIndex = index;
-			}
-		});
-
-		return currentIndex;
-	}
-
 	function updateWorkNav() {
-		const workTop = getWorkTop();
-		const scrollPoint = window.scrollY + workTop + 2;
+		refreshMeasurements();
 
-		const sectionRect = worksSection.getBoundingClientRect();
-		const firstCardY = getCardY(0);
-
-		const currentIndex = getCurrentIndexByOverlap();
+		const currentIndex = getCurrentIndex();
 		const lastIndex = workCards.length - 1;
 
-		/*
-			nav 노출 조건
-			1. 첫 카드가 sticky 위치에 도착했을 때부터
-			2. works-section 안에 있을 때
-			3. 마지막 카드가 현재 카드가 되면 nav 숨김
-		*/
+		const sectionRect = worksSection.getBoundingClientRect();
+
 		const isNavShow =
-			scrollPoint >= firstCardY &&
+			window.scrollY >= targetYs[0] - 2 &&
 			sectionRect.bottom > window.innerHeight &&
 			currentIndex < lastIndex;
 
@@ -173,13 +170,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			: 1 - Math.pow(-2 * t + 2, 3) / 2;
 	}
 
-	function smoothScrollTo(targetY, duration = 900) {
+	function smoothScrollTo(targetY, duration = 850) {
 		if (scrollAnimationId) {
 			cancelAnimationFrame(scrollAnimationId);
 		}
 
+		const html = document.documentElement;
+		const originalScrollBehavior = html.style.scrollBehavior;
+
+		/*
+			중요:
+			CSS의 scroll-behavior: smooth랑 JS 스크롤이 겹치면
+			위로 이동할 때 버벅이고 목표 위치로 못 감
+		*/
+		html.style.scrollBehavior = 'auto';
+
 		const startY = window.scrollY;
-		const distance = targetY - startY;
+		const endY = Math.max(0, targetY);
+		const distance = endY - startY;
 		const startTime = performance.now();
 
 		function scrollStep(currentTime) {
@@ -193,7 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (progress < 1) {
 				scrollAnimationId = requestAnimationFrame(scrollStep);
 			} else {
+				window.scrollTo(0, endY);
+
+				html.style.scrollBehavior = originalScrollBehavior;
 				scrollAnimationId = null;
+
 				updateWorkNav();
 			}
 		}
@@ -201,17 +213,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		scrollAnimationId = requestAnimationFrame(scrollStep);
 	}
 
-	workNavLinks.forEach((link, index) => {
-		link.addEventListener('click', (e) => {
-			e.preventDefault();
+	navItems.forEach((item, index) => {
+		item.link.addEventListener(
+			'click',
+			(e) => {
+				e.preventDefault();
+				e.stopImmediatePropagation();
 
-			const targetY = getTargetY(index);
+				const targetY = getTargetY(index);
 
-			setActiveNav(index);
-			worksSection.classList.add('is-nav-show');
+				setActiveNav(index);
+				worksSection.classList.add('is-nav-show');
 
-			smoothScrollTo(targetY, 900);
-		});
+				smoothScrollTo(targetY, 850);
+			},
+			true
+		);
 	});
 
 	window.addEventListener('scroll', requestUpdateWorkNav);
